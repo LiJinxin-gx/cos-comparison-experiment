@@ -1,4 +1,4 @@
-"""
+﻿"""
 Example: Von Neumann Architecture Agent — instructions as data.
 
 Demonstrates:
@@ -8,7 +8,7 @@ Demonstrates:
   - Few-shot learning: store input→program mappings, infer by similarity
 """
 import sys
-sys.path.insert(0, r"C:\AI项目\explore")
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from algorithms import VonNeumannAgent, make_surf_program
 
 

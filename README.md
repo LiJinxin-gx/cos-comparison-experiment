@@ -109,7 +109,7 @@ weighted higher. Verified across: face (77.5%), captcha (100%), text
 Bidirectional Hierarchical Similarity Matching. 11-stage pipeline:
 boundary extraction → environment suppression → multi-threshold response →
 keypoint selection → geometric signature → template matching → coarse rank
-→ fine re-rank. Current best: 73.3% on ORL face recognition (local optimum).
+→ fine re-rank. Current best: 73.3% on standard face benchmark (local optimum).
 
 ### Pure Template Network (`algorithms/thcn.py`)
 Hierarchical template network WITHOUT residual connections. Each data point
@@ -142,7 +142,7 @@ config generates programs. Few-shot learning via memory retrieval.
 
 | Domain | Task | Algorithm | Result |
 |--------|------|-----------|--------|
-| Face | Recognition | BHSM v12 | 73.3% (ORL, local optimum) |
+| Face | Recognition | BHSM v12 | 73.3% (standard face benchmark, local optimum) |
 | Face | Classification | Pure Template (k=5) | 95.8% |
 | Face | Generation consistency | Pure Template | 100% |
 | Captcha | Recognition | Multi-scale | 100% |

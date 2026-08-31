@@ -15,7 +15,7 @@ Representation: data_point = (tpl_L0, tpl_L1, tpl_L2, tpl_L3)
 Generation: select template path (cross-class allowed), upsample through
             levels — templates themselves contain all information.
 
-Verified results (ORL face, 40 classes):
+Verified results (standard face benchmark, 40 classes):
   - Classification: 95.8% (k=5 templates/level)
   - Generation consistency: 100% (generated from class A templates
     classified as A)

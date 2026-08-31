@@ -1,0 +1,47 @@
+# =============================================================================
+# matching.module_bat
+# Matching Call Template (translated from templates/matching_template.py)
+# Edit the query/reference locations below, then run:
+#     python -m cos_comparison batch matching.module_bat
+# The locations are set through the imported input helper.
+# =============================================================================
+
+import_module input
+
+# --- 1. Data locations (EDIT THESE) ---
+input.set_query_dir "C:/path/to/query" -> 0
+print "query dir:"
+print data[0]
+
+input.set_reference_dir "C:/path/to/reference" -> 1
+print "reference dir:"
+print data[1]
+
+# --- 2. Backend ---
+core.set_mode (cos_comparison_c cos_comparison) -> 2
+print "backend mode:"
+print data[2]
+
+# --- 3. Load queries and references ---
+input.load_queries -fmt "txt" -> 3
+print "queries:"
+print data[3]
+
+input.load_references -fmt "txt" -> 4
+print "references:"
+print data[4]
+
+# --- 4. Cosine matching (first query vs all references, top-k) ---
+input.key_at data[3] 0 -> 5
+print "query name:"
+print data[5]
+
+input.value_at data[3] 0 -> 6
+print "query tensor:"
+print data[6]
+
+input.top_matches data[6] data[4] -k 5 -> 7
+print "top matches:"
+print data[7]
+
+print "=== Matching template complete ==="

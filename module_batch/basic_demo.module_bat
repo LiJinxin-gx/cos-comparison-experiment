@@ -1,0 +1,53 @@
+# =============================================================================
+# basic_demo.module_bat
+# Basic cos_comparison operations: cosine, passive, active, statistics.
+# Run: python -m cos_comparison batch basic_demo.module_bat
+# Note: data refs use dataN (no angle brackets); each instruction result
+#       is printed automatically by the batch executor.
+# =============================================================================
+
+# --- 1. Full tensor cosine similarity ---
+print "=== 1. Cosine Similarity ==="
+cos [1.0 2.0 3.0 4.0] [1.0 2.0 3.0 4.0] -> 0
+print "identical tensors (expect 1.0):"
+print data0
+
+cos [1.0 2.0 3.0] [4.0 5.0 6.0] -> 1
+print "different tensors (expect < 1.0):"
+print data1
+
+# --- 2. Passive mode ---
+print "=== 2. Passive Mode (3x3, 2x2 window) ==="
+cos_comparison_passive [[1.0 2.0 3.0] [4.0 5.0 6.0] [7.0 8.0 9.0]] -window_size (2 2) -step (1 1) -d (1 0) -> 2
+print "passive output:"
+print data2
+
+# --- 3. Active mode ---
+print "=== 3. Active Mode (diagonal kernel) ==="
+cos_comparison_active [[1.0 2.0 3.0] [4.0 5.0 6.0] [7.0 8.0 9.0]] -kernel [[1.0 0.0] [0.0 1.0]] -step (1 1) -> 3
+print "active response:"
+print data3
+
+# --- 4. Local statistics ---
+print "=== 4. Local Mean & Variance ==="
+mean_local [[1.0 2.0 3.0] [4.0 5.0 6.0] [7.0 8.0 9.0]] -local_size (2 2) -step (1 1) -> 4
+print "local mean:"
+print data4
+
+local_variance [[1.0 2.0 3.0] [4.0 5.0 6.0] [7.0 8.0 9.0]] -local_size (2 2) -step (1 1) -> 5
+print "local variance:"
+print data5
+
+# --- 5. Shape inference ---
+print "=== 5. Shape Inference ==="
+infer_shape [[1.0 2.0] [3.0 4.0] [5.0 6.0]] -> 6
+print "shape of 3x2 matrix:"
+print data6
+
+# --- 6. Threshold map ---
+print "=== 6. Threshold Map ==="
+threshold_map [[1.0 2.0 3.0] [4.0 5.0 6.0] [7.0 8.0 9.0]] -pairs ((0.0 3.0 0.0) (3.0 6.0 1.0) (6.0 10.0 2.0)) -default_value -1.0 -> 7
+print "quantized (0-3->0, 3-6->1, 6-9->2):"
+print data7
+
+print "=== basic_demo complete ==="

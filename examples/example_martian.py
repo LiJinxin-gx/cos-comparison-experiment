@@ -1,4 +1,4 @@
-"""
+﻿"""
 Example: Martian Encoding — language-agnostic internal representation.
 
 Demonstrates:
@@ -8,7 +8,7 @@ Demonstrates:
   - Normalized Compression Distance: completely encoding-agnostic
 """
 import sys
-sys.path.insert(0, r"C:\AI项目\explore")
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from algorithms import (martian_encode, martian_similarity,
                         anonymize_symbols, ngram_anonymize,
                         normalized_compression_distance)

@@ -1,4 +1,4 @@
-"""
+﻿"""
 Example: Cross-Modal Mapping via Paired Bridging.
 
 Demonstrates the breakthrough algorithm:
@@ -10,7 +10,7 @@ Demonstrates the breakthrough algorithm:
   Result: image→text 100% retrieval
 """
 import sys
-sys.path.insert(0, r"C:\AI项目\explore")
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from algorithms import paired_bridge_retrieval, quantize_attributes
 
 

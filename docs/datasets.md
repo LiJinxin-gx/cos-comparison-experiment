@@ -1,35 +1,35 @@
-# 数据清单 (探索用)
+# Dataset Inventory (Exploration Use)
 
-## 经典数据 (保留待用)
+## Classic Datasets (Retained for Future Use)
 
-| 数据 | 位置 | 规模 | 说明 |
-|------|------|------|------|
-| 证件照 | test/testdata/face | 67 张 | 1 人 1 张, face1/face2 验证 (跨域) |
-| ORL | test/testdata/orl/faces | 40人×10 | 5-shot 标准人脸库 |
-| MNIST | E:\testdata\mnist | 60000/10000 | 手写数字 |
-| 20newsgroups | E:\testdata\20newsgroups | 18846 | 文本聚类 |
-| 验证码(旧) | E:\testdata\captcha_arial | train 500/test 100 | 字符模糊, 质量差 (弃用待用) |
-| 验证码(硬) | E:\testdata\captcha_hard | - | 旋转+干扰线 |
-| 视频 | test/testdata/video + video_dl | 7+3 个 MP4 | CPU 科普 + Blender 样片 |
+| Dataset | Location | Scale | Description |
+|---------|----------|-------|-------------|
+| ID photos | test/testdata/face | 67 images | 1 person 1 photo, face1/face2 validation (cross-domain) |
+| Standard face benchmark | test/testdata/orl/faces | 40 persons x 10 | 5-shot standard face dataset |
+| Handwritten digits | E:\testdata\mnist | 60000/10000 | Handwritten digit recognition |
+| News groups | E:\testdata\20newsgroups | 18846 | Text clustering |
+| Captcha (old) | E:\testdata\captcha_arial | train 500/test 100 | Blurred characters, low quality (deprecated) |
+| Captcha (hard) | E:\testdata\captcha_hard | - | Rotation + interference lines |
+| Video | test/testdata/video + video_dl | 7+3 MP4 | CPU educational + Blender samples |
 
-## 高质量数据 (新下载)
+## High-Quality Datasets (Newly Downloaded)
 
-| 数据 | 位置 | 规模 | 来源 |
-|------|------|------|------|
-| captcha_hq2 | test/testdata/captcha_hq2 | **4069 张** | orlov-ai/hcaptcha-dataset (8 类现代 hcaptcha) |
-| face_crop | test/testdata/face_crop | **668 张** | ahmetozlu/face_recognition_crop (2人×250+) |
-| face_attendance | test/testdata/face_attendance | 14 张 | 考勤人脸 |
-| meGlass | test/testdata/meGlass | 10 张 | 高质量人脸样本 |
-| captcha_hq | test/testdata/captcha_hq | 6 张 | 早期下载 (小) |
+| Dataset | Location | Scale | Source |
+|---------|----------|-------|--------|
+| captcha_hq2 | test/testdata/captcha_hq2 | **4069 images** | Modern captcha dataset (8 classes) |
+| face_crop | test/testdata/face_crop | **668 images** | Face recognition crop dataset (2 persons x 250+) |
+| face_attendance | test/testdata/face_attendance | 14 images | Attendance face photos |
+| meGlass | test/testdata/meGlass | 10 images | High-quality face samples |
+| captcha_hq | test/testdata/captcha_hq | 6 images | Early download (small) |
 
-## 下载方式
+## Download Method
 
-GitHub API 搜索定位 → codeload zip (raw.githubusercontent 超时不可用)
-→ 解压至 test/testdata/ (旧数据 E:\testdata 未动)
+Platform API search -> codeload zip (raw CDN timeout unavailable)
+-> extract to test/testdata/ (old data E:\testdata untouched)
 
-## 输出与日志
+## Output and Logs
 
-- 探索日志: test/explore_logs/ + 本 docs/
-- 视频输出: test/video_output_v3/
-- Agent 输出: test/agent_output/ surf_output/ behavior_output*/
-- 人脸实验: test/face_*.py + face_*.log
+- Exploration logs: test/explore_logs/ + this docs/
+- Video output: test/video_output_v3/
+- Agent output: test/agent_output/ surf_output/ behavior_output*/
+- Face experiments: test/face_*.py + face_*.log

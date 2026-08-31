@@ -1,33 +1,38 @@
-# 连续映射层次隔离记忆
+# Continuous Mapping Hierarchical Isolation Memory
 
-脚本: test/hierarchical_memory.py (v1-v4) | 正式化: tests/memory_hier.py (见下)
-数据流: L1 条目层 → L2 主题原型层 → L3 观点层
+Script: test/hierarchical_memory.py (v1-v4) | Formalized: tests/memory_hier.py
+Data flow: L1 entry layer -> L2 topic prototype layer -> L3 viewpoint layer
 
-## 核心机制
+## Core Mechanism
 
 ```
-连续映射: 条目特征向量 ↔ 主题原型 cos 连续得分
-阈值隔离: 得分>阈值 归入原型层, 否则隔离为新主题
-按需提取: 仅需求(needs)相关条目抽象进 L2, 无关数据隔离在 L1 不上升
-  (非全量压缩! 高层保持纯净)
-细节保留: 抽象条目保留差异向量+细节词 (不遗漏)
-层次互驱: 自底向上聚合 (L1→L2→L3); 自顶向下需求信号 (L3 缺口+细节词)
-  → 驱动 L2 映射与 L1 搜索; 隔离不固化 (需求演化后重新评估)
-搜索/整理解耦: 生产者(并行搜索)只写 L1; 消费者读 L1 写 L2/L3
+Continuous mapping: entry feature vector <-> topic prototype cos continuous score
+Threshold isolation: score > threshold -> assigned to prototype layer, else isolated as new topic
+On-demand extraction: only demand(needs)-relevant entries abstract into L2,
+  irrelevant data isolated at L1 and does not rise
+  (NOT full compression! high level stays pure)
+Detail retention: abstracted entries retain difference vectors + detail words (no omission)
+Hierarchical mutual driving: bottom-up aggregation (L1->L2->L3);
+  top-down demand signals (L3 gaps + detail words)
+  -> drives L2 mapping and L1 search; isolation is not fixed (re-evaluated as demand evolves)
+Search/organization decoupled: producers (parallel search) only write L1;
+  consumers read L1 write L2/L3
 ```
 
-## 结果
+## Results
 
-- 按需提取统计: 抽象/隔离计数 (无关数据不上升) ✓
-- 需求演化: 覆盖类退出需求, 缺口类进入需求 → 驱动定向搜索 ✓
-- 共训练 (训练+验证同参与统计): 频率分布随数据累积更准 ✓
+- On-demand extraction stats: abstraction/isolation counts (irrelevant data does not rise) verified
+- Demand evolution: covered classes exit demand, gap classes enter demand -> drives targeted search verified
+- Co-training (training + validation both participate in stats): frequency distribution
+  becomes more accurate with data accumulation verified
 
-## 正式化
+## Formalization
 
-tests/memory_hier.py: 纯标准库+cos 的 HierMemory (按需提取+层间驱动),
-test_explore_smoke 覆盖 (需求命中/隔离/缺口驱动) ✓
+tests/memory_hier.py: pure standard library + cos HierMemory (on-demand extraction +
+inter-layer driving), test_explore_smoke coverage (demand hit/isolation/gap driving) verified
 
-## 结论
+## Conclusion
 
-连续映射层次隔离应用于记忆 = 按需提取 + 双向交互 + 可累积 (数据库思想),
-与深度学习全量压缩有本质区别。
+Continuous mapping hierarchical isolation applied to memory = on-demand extraction +
+bidirectional interaction + accumulability (database thinking), fundamentally different
+from deep learning full compression.

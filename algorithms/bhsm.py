@@ -2,7 +2,7 @@
 BHSM — Bidirectional Hierarchical Similarity Matching.
 
 Algorithm evolution: v6 (same-points only, 9.2%) → v12 (current best, 73.3%
-on ORL face recognition). v12 is a local optimum — any incremental change
+on standard face benchmark). v12 is a local optimum — any incremental change
 to the coarse-ranking stage degrades performance.
 
 v12 pipeline (11 atomic stages):

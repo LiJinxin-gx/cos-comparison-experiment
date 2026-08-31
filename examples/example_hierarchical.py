@@ -1,4 +1,4 @@
-"""
+﻿"""
 Example: Hierarchical Representation with Isolation and Top-Down Drive.
 
 Demonstrates the foundational principle:
@@ -7,7 +7,7 @@ Demonstrates the foundational principle:
   - Top-down drive: high-level context can recover masked low-level detail
 """
 import sys
-sys.path.insert(0, r"C:\AI项目\explore")
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from core import HierarchicalRepresentation
 
 

@@ -1,10 +1,10 @@
-"""
+﻿"""
 Example: Basic cosine similarity and tensor utilities.
 
 Zero dependencies. Inputs are lists (tensors) or strings.
 """
 import sys
-sys.path.insert(0, r"C:\AI项目\explore")
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from core import cosine, as_tensor, flatten, multiscale_cosine, multiscale_match
 
 

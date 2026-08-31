@@ -1,0 +1,68 @@
+# =============================================================================
+# topology_analysis.module_bat
+# Topological analysis: graph shortest path + Euler characteristic.
+# Run: python -m cos_comparison batch topology_analysis.module_bat
+# =============================================================================
+
+print "=== Topology Analysis Demo ==="
+
+# --- 1. Graph shortest path ---
+print "--- Graph Shortest Path ---"
+
+# Adjacency: node -> [(neighbor, weight)]
+# Graph: 0-1(1), 1-2(2), 0-2(5), 2-3(1)
+let graph ((0 (1 1)) (1 (0 1) (2 2)) (2 (1 2) (0 5) (3 1)) (3 (2 1)))
+print "Graph (4 nodes):"
+print data0
+
+shortest_path_between data0 0 3 -> 1
+print "Shortest path 0->3 (expect 0->1->2->3 = 4):"
+print data1
+
+shortest_path_between data0 0 2 -> 2
+print "Shortest path 0->2 (direct=5, via 1=3, expect 3):"
+print data2
+
+# --- 2. Euler characteristic ---
+print "--- Euler Characteristic ---"
+
+# chi = V - E + F (for 2D)
+# Triangle: 3V, 3E, 1F -> chi = 1
+let triangle ((0 3) (1 3) (2 1))
+Euler_characteristic_compute_by_cell data3 -> 4
+print "Triangle (3V,3E,1F), expect chi=1:"
+print data4
+
+# Square: 4V, 4E, 1F -> chi = 1
+let square ((0 4) (1 4) (2 1))
+Euler_characteristic_compute_by_cell data5 -> 6
+print "Square (4V,4E,1F), expect chi=1:"
+print data6
+
+# Torus: 1V, 2E, 1F -> chi = 0
+let torus ((0 1) (1 2) (2 1))
+Euler_characteristic_compute_by_cell data7 -> 8
+print "Torus (1V,2E,1F), expect chi=0:"
+print data8
+
+# Two points: 2V -> chi = 2
+let two_points ((0 2))
+Euler_characteristic_compute_by_cell data9 -> 10
+print "Two isolated points, expect chi=2:"
+print data10
+
+# --- 3. Larger graph ---
+print "--- Larger Graph (5 nodes) ---"
+
+let large_graph ((0 (1 2) (2 1)) (1 (0 2) (3 3)) (2 (0 1) (3 5)) (3 (1 3) (2 5) (4 2)) (4 (3 2)))
+print data11
+
+shortest_path_between data11 0 4 -> 12
+print "Shortest path 0->4:"
+print data12
+
+shortest_path_between data11 1 2 -> 13
+print "Shortest path 1->2:"
+print data13
+
+print "=== topology_analysis complete ==="

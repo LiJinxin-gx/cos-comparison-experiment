@@ -1,4 +1,4 @@
-"""
+﻿"""
 Example: Passive-Active Joint Extraction.
 
 Demonstrates the core principle: information arises from difference.
@@ -6,7 +6,7 @@ Passive mode finds boundaries (where data changes); active mode matches
 templates; joint mode uses passive points to guide active matching.
 """
 import sys
-sys.path.insert(0, r"C:\AI项目\explore")
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from core import passive_extract, active_match, joint_extract, local_variance
 
 

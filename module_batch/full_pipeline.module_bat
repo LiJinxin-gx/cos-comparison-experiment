@@ -1,0 +1,106 @@
+# =============================================================================
+# full_pipeline.module_bat
+# End-to-end pipeline: input -> passive -> active -> statistics ->
+# threshold -> similarity comparison.
+# Run: python -m cos_comparison batch full_pipeline.module_bat
+# =============================================================================
+
+print "========================================"
+print "  Full Processing Pipeline"
+print "========================================"
+
+# ===================== STAGE 1: INPUT =====================
+print "--- Stage 1: Input Data ---"
+
+let sample_a [[1.0 0.0 1.0 0.0 1.0] [0.0 1.0 0.0 1.0 0.0] [1.0 0.0 1.0 0.0 1.0] [0.0 1.0 0.0 1.0 0.0] [1.0 0.0 1.0 0.0 1.0]]
+print "Sample A (checkerboard 5x5), shape:"
+infer_shape data0
+
+let sample_b [[1.0 0.0 1.0 0.0 1.0] [0.0 1.0 0.0 1.0 0.0] [1.0 0.0 1.0 0.0 1.0] [0.0 1.0 0.0 1.0 0.0] [1.0 0.0 1.0 0.0 1.0]]
+print "Sample B (identical to A), shape:"
+infer_shape data1
+
+let sample_c [[1.0 1.0 1.0 1.0 1.0] [1.0 2.0 2.0 2.0 1.0] [1.0 2.0 3.0 2.0 1.0] [1.0 2.0 2.0 2.0 1.0] [1.0 1.0 1.0 1.0 1.0]]
+print "Sample C (concentric 5x5), shape:"
+infer_shape data2
+
+# ===================== STAGE 2: PASSIVE =====================
+print "--- Stage 2: Passive Boundary Extraction ---"
+
+cos_comparison_passive data0 -window_size (3 3) -step (1 1) -d (1 0) -> 3
+print "A passive response:"
+print data3
+
+cos_comparison_passive data1 -window_size (3 3) -step (1 1) -d (1 0) -> 4
+print "B passive response:"
+print data4
+
+cos_comparison_passive data2 -window_size (3 3) -step (1 1) -d (1 0) -> 5
+print "C passive response:"
+print data5
+
+# ===================== STAGE 3: ACTIVE =====================
+print "--- Stage 3: Active Template Matching ---"
+
+let cross_kernel [[0.0 1.0 0.0] [1.0 1.0 1.0] [0.0 1.0 0.0]]
+print "Template: cross pattern 3x3"
+
+cos_comparison_active data0 -kernel data6 -step (1 1) -> 7
+print "A active match:"
+print data7
+
+cos_comparison_active data2 -kernel data6 -step (1 1) -> 8
+print "C active match:"
+print data8
+
+# ===================== STAGE 4: STATISTICS =====================
+print "--- Stage 4: Local Statistics ---"
+
+mean_local data0 -local_size (3 3) -step (1 1) -> 9
+print "A local mean:"
+print data9
+
+local_variance data0 -local_size (3 3) -step (1 1) -> 10
+print "A local variance:"
+print data10
+
+mean_local data2 -local_size (3 3) -step (1 1) -> 11
+print "C local mean:"
+print data11
+
+# ===================== STAGE 5: THRESHOLD =====================
+print "--- Stage 5: Threshold Quantization ---"
+
+threshold_map data3 -pairs ((0.0 0.3 0.0) (0.3 0.6 1.0) (0.6 2.0 2.0)) -default_value -1.0 -> 12
+print "A passive quantized (0/1/2):"
+print data12
+
+threshold_map data7 -pairs ((0.0 0.3 0.0) (0.3 0.6 1.0) (0.6 2.0 2.0)) -default_value -1.0 -> 13
+print "A active quantized (0/1/2):"
+print data13
+
+# ===================== STAGE 6: SIMILARITY =====================
+print "--- Stage 6: Feature Similarity ---"
+
+cos data3 data4 -> 14
+print "passive(A) vs passive(B), expect 1.0:"
+print data14
+
+cos data3 data5 -> 15
+print "passive(A) vs passive(C), expect < 1.0:"
+print data15
+
+cos data9 data11 -> 16
+print "mean(A) vs mean(C):"
+print data16
+
+# ===================== SUMMARY =====================
+print "========================================"
+print "  Pipeline Summary"
+print "========================================"
+print "Stages: input -> passive -> active -> statistics -> threshold -> similarity"
+print "A vs B (identical) passive similarity:"
+print data14
+print "A vs C (different) passive similarity:"
+print data15
+print "=== full_pipeline complete ==="

@@ -1,0 +1,74 @@
+# =============================================================================
+# control_flow.module_bat
+# Demonstrates dataN variables, let/get, and data chaining pipeline.
+# Run: python -m cos_comparison batch control_flow.module_bat
+# =============================================================================
+
+print "=== Control Flow & Data Chaining Demo ==="
+
+# --- Setup variables ---
+let a [1.0 2.0 3.0]
+let b [1.0 2.0 3.0]
+let c [4.0 5.0 6.0]
+let threshold 0.9
+
+print "Variables: a, b (identical), c (different), threshold=0.9"
+
+# --- Compute similarities ---
+print "--- Similarity Computation ---"
+cos data0 data1 -> 3
+print "cos(a,b) = (expect 1.0):"
+print data3
+
+cos data0 data2 -> 4
+print "cos(a,c) = (expect < 1.0):"
+print data4
+
+# --- Data chaining: pipeline of operations ---
+print "--- Data Chaining Pipeline ---"
+
+let pipeline_data [2.0 4.0 6.0 8.0 10.0]
+print "Input:"
+print data5
+
+# Step 1: cos with reference
+let ref [1.0 2.0 3.0 4.0 5.0]
+cos data5 data6 -> 7
+print "Step 1 - cos(ref):"
+print data7
+
+# Step 2: threshold map (quantize)
+threshold_map data5 -pairs ((0.0 4.0 0.0) (4.0 8.0 1.0) (8.0 20.0 2.0)) -default_value -1.0 -> 8
+print "Step 2 - quantize (0/1/2):"
+print data8
+
+# Step 3: infer shape
+infer_shape data5 -> 9
+print "Step 3 - shape:"
+print data9
+
+# Step 4: local statistics on 2D data
+print "--- 2D Statistics Chain ---"
+let matrix [[1.0 2.0 3.0] [4.0 5.0 6.0] [7.0 8.0 9.0]]
+mean_local data10 -local_size (2 2) -step (1 1) -> 11
+print "mean:"
+print data11
+
+local_variance data10 -local_size (2 2) -step (1 1) -> 12
+print "variance:"
+print data12
+
+# Step 5: compare mean and variance
+cos data11 data12 -> 13
+print "cos(mean, variance):"
+print data13
+
+# --- Namespace operations ---
+print "--- Namespace Operations ---"
+let temp_var 99.5
+print "let temp_var = 99.5"
+get temp_var
+delete temp_var
+print "deleted temp_var"
+
+print "=== control_flow demo complete ==="

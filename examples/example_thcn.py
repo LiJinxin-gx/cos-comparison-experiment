@@ -1,4 +1,4 @@
-"""
+﻿"""
 Example: Pure Template Network (THCN) — classification and generation.
 
 Key point: NO residual connections. Variation is captured by multiple
@@ -11,7 +11,7 @@ Demonstrates:
   - Generation from template paths (cross-class allowed)
 """
 import sys
-sys.path.insert(0, r"C:\AI项目\explore")
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from algorithms import PureTemplateNetwork
 
 

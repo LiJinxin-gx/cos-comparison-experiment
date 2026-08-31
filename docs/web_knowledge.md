@@ -1,40 +1,44 @@
-# Agent 搜索知识库 + 百度登录态获取
+# Agent Web Knowledge Search + Authenticated Session Acquisition
 
-## 1. 搜索知识库 (test/agent_web_knowledge.py)
+## 1. Search Knowledge Base
 
-流水线: 必应搜索(b_algo) + 百度百科抓取(Edge headless, 自定义 UA 反爬)
-→ 信息框 dt/dd 提取 → SQLite 入库 (带来源/URL/时间戳) → 权威真值校验
+Pipeline: search engine query + web encyclopedia scraping (headless browser,
+custom UA anti-bot) -> info box extraction -> SQLite storage (with source/URL/timestamp)
+-> authoritative truth verification.
 
-| 任务 | 结果 |
-|------|------|
-| 化学元素 | **118/118** (符号/序数 100% 完整, 修正 17 处错位) |
-| ISO 639 语言 | **188 条** (代码+中文名) |
+| Task | Result |
+|------|--------|
+| Chemical elements | **118/118** (symbols/atomic numbers 100% complete, 17 misalignments corrected) |
+| ISO 639 languages | **188 entries** (codes + names) |
 
-生成: elements_encyclopedia.md + language_codes.md
+Output: elements_encyclopedia.md + language_codes.md
 
-## 2. 百度登录态获取 (test/agent_baidu_behaviors.py + run_baidu_program.py)
+## 2. Authenticated Session Acquisition
 
-机器登录堡垒场景: 复制用户 Firefox profile (cookies.sqlite) → headless Firefox
-+ geckodriver → 登录态确认 (账号掩码, 含全角星号正则) → 百科词条 + 贴吧热帖入库
+Machine-login fortress scenario: copy user browser profile (cookies.sqlite) ->
+headless browser + driver -> session confirmation (account masked, full-width
+asterisk regex) -> encyclopedia entries + forum hot posts into knowledge base.
 
-结果: 登录态 195******35 ✓ | 百科 3 词条 + 贴吧 2 吧真实热帖 → 知识库 + 报告
+Result: authenticated session confirmed | 3 encyclopedia entries + 2 forum hot
+threads -> knowledge base + report.
 
-调试要点:
-- 百度账号掩码用全角星号 (U+FF0A) — 正则需覆盖 [\*\uFF0A\u2022\u2217]
-- raw.githubusercontent 被墙 → GitHub API + codeload zip
+Debug notes:
+- Account masking uses full-width asterisk (U+FF0A) — regex must cover [\*\uFF0A\u2022\u2217]
+- Raw CDN endpoints blocked -> use platform API + codeload zip
 
-## 3. 冯·诺依曼指令化冲浪 (test/von_surf_engine.py)
+## 3. Von Neumann Instruction-Based Surfing
 
-固定执行器 + BEHAVE/REFLECT/CORRECT 指令 (12-23 条全在 DB):
+Fixed executor + BEHAVE/REFLECT/CORRECT instructions (12-23 entries all in DB):
 
-| 版本 | 指令 | 准确率 |
-|------|------|--------|
-| 指令化基础 | 12 条 (收集/生成) | 85 |
-| +反射纠偏 REFLECT/CORRECT | 18 条 | **86** (噪声 16.7%→0%) |
-| +反馈式驱动 derive_queries | 23 条 | **90** (聚类 2→5) |
-| +分层记忆按需提取 | 19 条 | 机制验证 (抽象/隔离统计) |
+| Version | Instructions | Accuracy |
+|---------|-------------|----------|
+| Instruction base | 12 (collect/generate) | 85 |
+| + reflection correction REFLECT/CORRECT | 18 | **86** (noise 16.7%->0%) |
+| + feedback-driven derive_queries | 23 | **90** (clusters 2->5) |
+| + hierarchical memory on-demand extraction | 19 | mechanism verified (abstraction/isolation stats) |
 
-## 结论
+## Conclusion
 
-搜索/整理解耦协作 (生产者写 L1, 消费者读 L1 写 L2/L3, 经需求信号互驱) 闭环成立;
-登录态复用 (profile cookie) 有效绕过登录堡垒。
+Search/organization decoupled collaboration (producer writes L1, consumer reads
+L1 writes L2/L3, driven by demand signals) closed-loop verified; authenticated
+session reuse (profile cookie) effectively bypasses login fortresses.

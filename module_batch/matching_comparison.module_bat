@@ -1,0 +1,61 @@
+# =============================================================================
+# matching_comparison.module_bat
+# Multi-tensor matching: compare query against references, rank by similarity.
+# Run: python -m cos_comparison batch matching_comparison.module_bat
+# =============================================================================
+
+print "=== Matching Comparison ==="
+
+# --- 1D cosine similarities ---
+print "--- 1D Cosine Similarity Rankings ---"
+
+cos [1.0 2.0 3.0 4.0 5.0] [1.0 2.0 3.0 4.0 5.0] -> 0
+print "ref_a (identical, expect 1.0):"
+print data0
+
+cos [1.0 2.0 3.0 4.0 5.0] [5.0 4.0 3.0 2.0 1.0] -> 1
+print "ref_b (reversed):"
+print data1
+
+cos [1.0 2.0 3.0 4.0 5.0] [1.0 1.0 1.0 1.0 1.0] -> 2
+print "ref_c (uniform):"
+print data2
+
+cos [1.0 2.0 3.0 4.0 5.0] [2.0 4.0 6.0 8.0 10.0] -> 3
+print "ref_d (scaled x2, expect 1.0):"
+print data3
+
+# --- 2D passive feature matching ---
+print "--- 2D Passive Feature Matching ---"
+
+cos_comparison_passive [[1.0 2.0 3.0] [4.0 5.0 6.0] [7.0 8.0 9.0]] -window_size (2 2) -step (1 1) -d (1 0) -> 4
+cos_comparison_passive [[1.0 2.0 3.0] [4.0 5.0 6.0] [7.0 8.0 9.0]] -window_size (2 2) -step (1 1) -d (1 0) -> 5
+cos_comparison_passive [[9.0 8.0 7.0] [6.0 5.0 4.0] [3.0 2.0 1.0]] -window_size (2 2) -step (1 1) -d (1 0) -> 6
+
+cos data4 data5 -> 7
+print "passive(q) vs passive(identical):"
+print data7
+
+cos data4 data6 -> 8
+print "passive(q) vs passive(reversed):"
+print data8
+
+# --- Active template matching ---
+print "--- Active Template Matching ---"
+
+cos_comparison_active [[1.0 2.0 3.0] [4.0 5.0 6.0] [7.0 8.0 9.0]] -kernel [[1.0 0.0] [0.0 1.0]] -step (1 1) -> 9
+print "active response (diagonal kernel):"
+print data9
+
+# --- Algorithm variants ---
+print "--- Algorithm Variants ---"
+
+cos [1.0 2.0 3.0 4.0 5.0] [2.0 4.0 6.0 8.0 10.0] -algorithm "mod" -> 10
+print "mod(query, scaled_ref):"
+print data10
+
+cos [1.0 2.0 3.0 4.0 5.0] [2.0 4.0 6.0 8.0 10.0] -algorithm "cosmod" -> 11
+print "cosmod(query, scaled_ref):"
+print data11
+
+print "=== matching_comparison complete ==="

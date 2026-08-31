@@ -1,0 +1,62 @@
+# =============================================================================
+# fourier_analysis.module_bat
+# Fourier transform analysis using math_tool.fourier module.
+# Run: python -m cos_comparison batch fourier_analysis.module_bat
+# =============================================================================
+
+print "=== Fourier Analysis Demo ==="
+
+# --- 1. Periodic signal ---
+let signal [1.0 0.0 -1.0 0.0 1.0 0.0 -1.0 0.0]
+print "Input: periodic signal [1,0,-1,0,1,0,-1,0]"
+print data0
+
+# --- 2. DFT ---
+print "--- DFT Spectrum ---"
+dft data0 -> 1
+print data1
+
+# --- 3. Power spectrum ---
+print "--- Power Spectrum ---"
+power_spectrum data0 -> 2
+print data2
+
+# --- 4. Inverse DFT ---
+print "--- Inverse DFT (reconstruct) ---"
+idft data1 -> 3
+print data3
+
+print "Original:"
+print data0
+print "Reconstructed:"
+print data3
+
+# --- 5. DFT kernel (N=4) ---
+print "--- DFT Kernel N=4 ---"
+dft_kernel_real 4 -> 4
+print "Real kernel:"
+print data4
+
+dft_kernel_imag 4 -> 5
+print "Imaginary kernel:"
+print data5
+
+# --- 6. Constant signal ---
+print "--- Constant Signal ---"
+let const [5.0 5.0 5.0 5.0 5.0 5.0 5.0 5.0]
+power_spectrum data6 -> 7
+print "Constant [5,5,...] power spectrum (DC only):"
+print data7
+
+# --- 7. Mixed signal ---
+print "--- Mixed Signal ---"
+let mixed [1.0 2.0 1.0 2.0 1.0 2.0 1.0 2.0]
+power_spectrum data8 -> 9
+print "[1,2,1,2,...] power spectrum:"
+print data9
+
+dft data8 -> 10
+print "[1,2,1,2,...] DFT:"
+print data10
+
+print "=== fourier_analysis complete ==="

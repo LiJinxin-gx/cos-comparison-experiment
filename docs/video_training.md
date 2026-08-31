@@ -1,26 +1,30 @@
-# 视频层次抽象生成训练
+# Video Hierarchical Abstraction Generation Training
 
-脚本: test/video_agent_gen_v3.py | 输出: test/video_output_v3/
+Script: test/video_agent_gen_v3.py | Output: test/video_output_v3/
 
-## 方法
+## Method
 
 ```
-L0 帧 -> L1 cos 特征(passive/active+下采样) -> L2 场景段原型(均值=相同点)
-     -> L3 视频摘要(段序列)
-原型+对比点(段差异)存 SQLite; 生成 = 高层次具体化 (对比点加权聚合, 学习权重)
-训练: 跨 3 视频联合 (36 帧对), 坐标下降+并行评估, 自由线程 18 workers
+L0 frames -> L1 cos features (passive/active + downsampling) -> L2 scene segment prototypes (mean = common points)
+     -> L3 video summary (segment sequence)
+Prototypes + contrast points (segment differences) stored in SQLite;
+generation = high-level concretization (contrast point weighted aggregation, learned weights)
+Training: joint across 3 videos (36 frame pairs), coordinate descent + parallel evaluation,
+free-threaded 18 workers
 ```
 
-## 结果 (对照 v2 基线)
+## Results (vs v2 baseline)
 
-| 指标 | v2 (固定权重引导) | v3 (学习权重) |
-|------|-------------------|----------------|
-| 生成改进 | -1.6% | **+20.2%** (训练 MAE +47.1%) |
-| 跨视频泛化 | 无 | **+6.4%** (未见视频) |
-| 数据 | 1 视频 | 10 视频 / 22545 帧入库 |
+| Metric | v2 (fixed weight guidance) | v3 (learned weights) |
+|--------|---------------------------|----------------------|
+| Generation improvement | -1.6% | **+20.2%** (training MAE +47.1%) |
+| Cross-video generalization | none | **+6.4%** (unseen video) |
+| Data | 1 video | 10 videos / 22545 frames in DB |
 
-权重: struct=-0.600 edge=-0.500 motion=-0.125 (长间隔插值减除运动干扰最优)
+Weights: struct=-0.600 edge=-0.500 motion=-0.125 (long-interval interpolation
+subtraction of motion interference optimal)
 
-## 结论
+## Conclusion
 
-层次抽象+对比点聚合生成任务模式有效; 训练数据越多对比点统计越准 (数据库思想)。
+Hierarchical abstraction + contrast point aggregation generation task pattern effective;
+more training data -> more accurate contrast point statistics (database thinking).

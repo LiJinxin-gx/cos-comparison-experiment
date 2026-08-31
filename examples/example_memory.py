@@ -1,4 +1,4 @@
-"""
+﻿"""
 Example: Hierarchical Memory with bidirectional level driving.
 
 Demonstrates:
@@ -8,7 +8,7 @@ Demonstrates:
   - Consolidation (organize similar templates without blocking search)
 """
 import sys
-sys.path.insert(0, r"C:\AI项目\explore")
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from algorithms import HierarchicalMemory
 
 

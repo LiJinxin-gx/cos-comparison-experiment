@@ -1,114 +1,115 @@
-# 预调用模板指令文件
+# Call Template Guide
 
-> 本文件说明如何使用 cos_comparison 项目的直接调用模板。
-> 所有模板均支持通过配置文件或代码参数设置训练数据位置。
+> This document explains how to use the direct call templates for the
+> cos_comparison project. All templates support setting training data location
+> via config file or code parameters.
 
-## 一、项目核心API概览
+## 1. Core API Overview
 
-### 1.1 后端选择
+### 1.1 Backend Selection
 
 ```python
 from cos_comparison.core import set_mode, get_mode, get_available_backends
 
-# 查看可用后端
+# List available backends
 print(get_available_backends())  # ('.cos_comparison_pydll', '.cos_comparison_c', '.cos_comparison')
 
-# 切换后端（优先级从高到低）
-set_mode(['cos_comparison_c', 'cos_comparison'])  # 优先ctypes，回退纯Python
-set_mode('cos_comparison')  # 强制纯Python
+# Switch backend (priority high to low)
+set_mode(['cos_comparison_c', 'cos_comparison'])  # ctypes preferred, fallback pure Python
+set_mode('cos_comparison')  # force pure Python
 ```
 
-### 1.2 核心函数
+### 1.2 Core Functions
 
-| 函数 | 用途 | 关键参数 |
-|------|------|---------|
-| `cos(a, b, algorithm=...)` | 全张量余弦相似度 | a,b: 同形状张量 |
-| `cos_comparison_passive(data, ...)` | 被动模式（滑动窗口自相似） | window_size, w1,w2,b1,b2, start/end/step |
-| `cos_comparison_active(data, kernel, ...)` | 主动模式（模板匹配） | kernel: 模板张量, w1,w2,b1,b2 |
-| `mean_local(data, local_size, ...)` | 局部均值 | local_size: 窗口大小, step |
-| `local_variance(data, local_size, ...)` | 局部方差 | local_size: 窗口大小, step |
-| `infer_shape(data)` | 推断张量形状 | data: 任意张量 |
-| `create_void_list(shape, default)` | 创建空张量 | shape: 维度元组 |
-| `load_as_default_data(data, ...)` | 加载为标准数据格式 | data, start, shape, step |
-| `threshold_filter(data, low, high, ...)` | 阈值过滤 | low/high: 阈值范围 |
-| `threshold_map(data, pairs, ...)` | 阈值映射 | pairs: (low,high,value)列表 |
-| `data_filter(data, callback, ...)` | 自定义过滤 | callback: 过滤函数 |
-| `data_mapping(data, callback, ...)` | 自定义映射 | callback: 映射函数 |
-| `elementwise(*tensors, func, ...)` | 逐元素操作 | func: 操作函数 |
+| Function | Purpose | Key Parameters |
+|----------|---------|----------------|
+| `cos(a, b, algorithm=...)` | Full-tensor cosine similarity | a,b: same-shape tensors |
+| `cos_comparison_passive(data, ...)` | Passive mode (sliding window self-similarity) | window_size, w1,w2,b1,b2, start/end/step |
+| `cos_comparison_active(data, kernel, ...)` | Active mode (template matching) | kernel: template tensor, w1,w2,b1,b2 |
+| `mean_local(data, local_size, ...)` | Local mean | local_size: window size, step |
+| `local_variance(data, local_size, ...)` | Local variance | local_size: window size, step |
+| `infer_shape(data)` | Infer tensor shape | data: any tensor |
+| `create_void_list(shape, default)` | Create empty tensor | shape: dimension tuple |
+| `load_as_default_data(data, ...)` | Load to standard format | data, start, shape, step |
+| `threshold_filter(data, low, high, ...)` | Threshold filter | low/high: threshold range |
+| `threshold_map(data, pairs, ...)` | Threshold mapping | pairs: list of (low,high,value) |
+| `data_filter(data, callback, ...)` | Custom filter | callback: filter function |
+| `data_mapping(data, callback, ...)` | Custom mapping | callback: mapping function |
+| `elementwise(*tensors, func, ...)` | Element-wise operation | func: operation function |
 
-### 1.3 张量类 `vector_map_as_tensor`
+### 1.3 Tensor Class `vector_map_as_tensor`
 
 ```python
 from cos_comparison.core import vector_map_as_tensor
 
 t = vector_map_as_tensor(vector=[1,2,3,4], shape=(2,2), strides=(2,1))
-t.mean()       # 均值
-t.variance()   # 方差
-t[0, 1]        # 索引访问
-t[0, 1] = 5.0  # 索引赋值
-len(t)         # 元素总数
-for x in t: ... # 迭代
+t.mean()       # mean
+t.variance()   # variance
+t[0, 1]        # index access
+t[0, 1] = 5.0  # index assignment
+len(t)         # total element count
+for x in t: ... # iteration
 ```
 
-### 1.4 算法选择
+### 1.4 Algorithm Selection
 
-`cos()` 和 `cos_comparison_passive/active` 的 `algorithm` 参数可选：
+The `algorithm` parameter for `cos()` and `cos_comparison_passive/active`:
 
-- `_cos` — 标准余弦相似度（默认）
-- `_mod` — 模长比
-- `_cosmod` — 余弦×模长比
+- `_cos` — standard cosine similarity (default)
+- `_mod` — magnitude ratio
+- `_cosmod` — cosine x magnitude ratio
 
-## 二、调用模板使用方法
+## 2. Template Usage
 
-### 2.1 训练模板 `training_template.py`
+### 2.1 Training Template `training_template.py`
 
-复制模板后，修改顶部配置区：
+Copy the template and modify the top config section:
 
 ```python
-# ===== 配置区 =====
-DATA_DIR = r"C:\path\to\training\data"   # 训练数据位置
-BACKEND = 'cos_comparison_c'              # 后端选择
-WINDOW_SIZE = (3, 3)                      # 被动模式窗口
-KERNEL = None                             # 主动模式模板（None=自动生成）
-OUTPUT_DIR = r"C:\path\to\output"         # 输出位置
+# ===== CONFIG =====
+DATA_DIR = r"C:\path\to\training\data"   # training data location
+BACKEND = 'cos_comparison_c'              # backend selection
+WINDOW_SIZE = (3, 3)                      # passive mode window
+KERNEL = None                             # active mode template (None=auto-generate)
+OUTPUT_DIR = r"C:\path\to\output"         # output location
 # ==================
 ```
 
-运行：
+Run:
 ```bash
 python training_template.py
 ```
 
-### 2.2 匹配模板 `matching_template.py`
+### 2.2 Matching Template `matching_template.py`
 
-用于两张量/多张量匹配任务。
+For query-reference matching tasks.
 
-### 2.3 配置文件方式
+### 2.3 Config File Mode
 
-模板支持从JSON配置文件读取参数：
+Templates support reading parameters from a JSON config file:
 
 ```bash
 python training_template.py --config my_config.json
 ```
 
-配置文件格式见 `config_template.json`。
+Config file format see `config_template.json`.
 
-## 三、数据格式要求
+## 3. Data Format Requirements
 
-### 3.1 张量输入
+### 3.1 Tensor Input
 
-所有核心函数接受以下张量格式：
-- 嵌套列表：`[[1.0, 2.0], [3.0, 4.0]]`
-- `vector_map_as_tensor` 对象
-- 任何实现 `__shape__()` / `__getitem__()` 协议的对象（鸭子类型）
-- 一维序列：`[1.0, 2.0, 3.0]`
+All core functions accept these tensor formats:
+- Nested list: `[[1.0, 2.0], [3.0, 4.0]]`
+- `vector_map_as_tensor` object
+- Any object implementing `__shape__()` / `__getitem__()` protocol (duck typing)
+- 1D sequence: `[1.0, 2.0, 3.0]`
 
-### 3.2 训练数据目录结构
+### 3.2 Training Data Directory Structure
 
 ```
 DATA_DIR/
 ├── class_A/
-│   ├── sample_001.txt   # 每行一个数值，或逗号分隔
+│   ├── sample_001.txt   # one value per line, or comma-separated
 │   ├── sample_002.txt
 │   └── ...
 ├── class_B/
@@ -117,16 +118,16 @@ DATA_DIR/
 └── ...
 ```
 
-或统一格式：
+Or unified format:
 ```
 DATA_DIR/
-├── train.csv            # 首列标签，其余列为特征
+├── train.csv            # first column label, rest features
 └── test.csv
 ```
 
-## 四、回调机制
+## 4. Callback Mechanism
 
-被动/主动模式支持回调函数，用于进度监控和错误处理：
+Passive/active modes support callback functions for progress monitoring and error handling:
 
 ```python
 def on_start(ctx):
@@ -146,10 +147,10 @@ result = cos_comparison_passive(
 )
 ```
 
-## 五、注意事项
+## 5. Notes
 
-1. **形状一致性**：`cos(a, b)` 要求 a 和 b 形状完全相同，否则抛 ValueError
-2. **窗口有效性**：被动/主动模式要求 `end - start - window_size >= 0`，否则抛 "effectless args"
-3. **后端差异**：pydll 后端最快但需编译；ctypes 次之；纯 Python 最兼容
-4. **零维张量**：空张量（含零维度）的 mean/variance 返回 None
-5. **输出复用**：可传入 `output` 参数复用预分配张量，避免重复分配
+1. **Shape consistency**: `cos(a, b)` requires a and b to have identical shape, otherwise ValueError
+2. **Window validity**: passive/active modes require `end - start - window_size >= 0`, otherwise "effectless args"
+3. **Backend differences**: pydll fastest but requires compilation; ctypes medium; pure Python most compatible
+4. **Zero-dimension tensors**: mean/variance of empty tensors (with zero dimension) returns None
+5. **Output reuse**: pass `output` parameter to reuse pre-allocated tensor, avoid repeated allocation
