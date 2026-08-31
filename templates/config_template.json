@@ -1,0 +1,34 @@
+{
+  "data_dir": "C:/path/to/training/data",
+  "data_format": "txt",
+  "output_dir": "C:/path/to/output",
+
+  "backend": "cos_comparison_c",
+  "backend_fallback": ["cos_comparison"],
+
+  "passive_window_size": [3, 3],
+  "passive_w1": 1.0,
+  "passive_w2": 1.0,
+  "passive_b1": 0.0,
+  "passive_b2": 0.0,
+  "passive_step": [1, 1],
+  "passive_d": [1, 0],
+
+  "active_kernel": null,
+  "active_w1": 1.0,
+  "active_w2": 1.0,
+  "active_b1": 0.0,
+  "active_b2": 0.0,
+  "active_step": [1, 1],
+
+  "algorithm": "cos",
+
+  "local_size": [3, 3],
+  "local_step": [1, 1],
+
+  "threshold_low": null,
+  "threshold_high": null,
+
+  "verbose": true,
+  "save_intermediate": false
+}

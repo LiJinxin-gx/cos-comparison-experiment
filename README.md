@@ -154,6 +154,31 @@ config generates programs. Few-shot learning via memory retrieval.
 | Cross-domain | Joint training | Unified vector | 100% within-domain |
 | General AI | Instruction following | Structure matching | 100% |
 
+## Call Templates (`templates/`)
+
+Ready-to-use templates for direct calls to the `cos_comparison` production
+library. Each template supports config-file or inline parameter setup,
+including training data location.
+
+| Template | Purpose | Key Features |
+|----------|---------|-------------|
+| `quick_call_template.py` | Minimal direct API calls | 6 demos: cos / passive / active / statistics / tensor / threshold |
+| `training_template.py` | Full training pipeline | Multi-class data loading, feature extraction, similarity matrix, JSON output |
+| `matching_template.py` | Query-reference matching | cos / passive / active modes, top-K results, JSON output |
+| `config_template.json` | JSON configuration | All parameters in one file for `--config` usage |
+| `CALL_GUIDE.md` | API reference & instructions | Full function signatures, parameter docs, callback guide, data formats |
+
+```bash
+# Quick start (requires cos_comparison installed)
+python templates/quick_call_template.py
+
+# Training with custom data
+python templates/training_template.py --data-dir /path/to/data --output-dir /path/to/out
+
+# Matching with config file
+python templates/matching_template.py --config my_config.json
+```
+
 ## License
 
 MIT — share and adapt freely.
