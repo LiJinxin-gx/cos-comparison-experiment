@@ -4,6 +4,7 @@ from .cosine import cosine, cosine_2d, as_tensor, flatten, normalize, tensor_sha
 from .multiscale import multiscale_cosine, multiscale_match, multiscale_represent, downsample
 from .passive_active import passive_extract, active_match, joint_extract, local_variance, local_mean
 from .hierarchical import HierarchicalRepresentation
+from .localknn import LocalKNN
 
 __all__ = [
     "cosine", "cosine_2d", "as_tensor", "flatten", "normalize",
@@ -12,4 +13,5 @@ __all__ = [
     "passive_extract", "active_match", "joint_extract",
     "local_variance", "local_mean",
     "HierarchicalRepresentation",
+    "LocalKNN",
 ]
