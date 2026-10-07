@@ -1,7 +1,25 @@
 # cos-comparison-experience
 
 > Algorithm exploration repository for the [cos_comparison](https://github.com/LiJinxin-gx/cos-comparison) project.
-> Zero dependencies. Tensor-in, tensor-out. Ideas over implementations.
+> **Recommended surface: [`platform/`](docs_platform/PLATFORM_GUIDE.md)** — a mature open-integration platform (NumPy allowed, formal backend auto-selected, I/O decoupled from processing).
+> Legacy folders (`core/`, `algorithms/`, `examples/`) stay zero-dependency idea sketches.
+
+## Latest platform (v0.5.3)
+
+The **`platform/` package** deeply integrates the latest core identity:
+extraction and generation are the forward / reverse of **one local comparison
+relation**, and **closure** is the universal criterion.
+
+- open integration: measurement auto-selects the installed cos_comparison
+  (C/python) -> NumPy -> pure Python;
+- matched I/O pairs (`save_field`/`load_field`, `fit_symbols`/`decode_symbols`)
+  decoupled from processing (`run_continuous`, `run_discrete`);
+- runs standalone (`python -m platform`) or imports as a module;
+- verified: I/O symmetry True, continuous closure mean|dE|~0 / max~2e-6,
+  discrete grounded connectors 100%.
+
+Start with [docs_platform/PLATFORM_GUIDE.md](docs_platform/PLATFORM_GUIDE.md)
+and [examples_platform/demo_platform.py](examples_platform/demo_platform.py).
 
 ## What is this?
 
@@ -43,60 +61,23 @@ regardless of which specific algorithm is being tested:
 
 ```
 explore/
-├── core/            # Foundational primitives (similarity, multi-scale, hierarchy)
-├── algorithms/      # Complete algorithm implementations (each file = one idea)
-├── examples/        # Runnable demonstrations of each algorithm
-├── templates/       # Call templates for the cos_comparison production library
-├── module_batch/    # Batch instruction files for command-line execution
-└── docs/            # Design notes and exploration logs
+├── platform/          # Recommended: open-integration platform (backends, io_pairs, relation_core, heatmap, depscan)
+├── candidates/        # Immature but promising results, tracked publicly (each with DEPENDENCIES)
+├── examples_platform/ # Mature standalone demo (out_platform/ heatmaps)
+├── docs_platform/     # Platform guide
+├── core/              # [legacy] Foundational primitives (zero dependency)
+├── algorithms/        # [legacy] One file = one idea (zero dependency)
+├── examples/          # [legacy] Runnable demos of legacy algorithms
+├── templates/         # [legacy] Call templates for the production library
+├── module_batch/      # [legacy] Batch instruction files
+└── docs/              # [legacy] Design notes and exploration logs
 ```
 
-The structure is organic — new directories and files appear as new directions
-are explored. The `core/` layer provides shared primitives; everything above it
-is a self-contained experiment.
-
-## How to Use
-
-### Run an example
-
-```bash
-python examples/<example_name>.py
-```
-
-Every example is standalone and requires no installation beyond Python 3.8+.
-
-### Use an algorithm in your own code
-
-```python
-import sys
-sys.path.insert(0, "/path/to/explore")
-from algorithms.<name> import <AlgorithmClass>
-```
-
-All algorithms accept tensors (nested lists of numbers) and return tensors or
-explicit structured results.
-
-### Run batch instructions
-
-```bash
-python -m cos_comparison batch module_batch/<file>.module_bat
-```
-
-Batch files use the cos_comparison command-line protocol to chain multiple
-operations in sequence.
-
-## Relationship to cos_comparison
-
-| Aspect | cos-comparison (main) | cos-comparison-experience (this repo) |
-|--------|----------------------|---------------------------------------|
-| Focus | Production library | Algorithm exploration |
-| Code | C + Python, 3 backends | Pure Python, zero dependencies |
-| Performance | Optimized (SIMD, PyBuffer, free-thread) | Readable, not optimized |
-| Stability | Versioned releases | Living experiments |
-| Input | Full API (duck typing, protocols) | Tensors only (nested lists) |
-
-Ideas validated here may eventually be reimplemented in the main repository
-with full optimization and API support.
+The `platform/` package is the recommended surface for mature work; `candidates/`
+tracks promising immature results. Both use **distributed dependency
+annotation** — each file declares its own `DEPENDENCIES` (Python version,
+required/optional distributions, backends, status, target); scan with
+`python -m platform.depscan`. The legacy folders are retained unchanged.
 
 ## License
 
