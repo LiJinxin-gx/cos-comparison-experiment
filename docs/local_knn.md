@@ -1,4 +1,4 @@
-﻿# Local k-NN Model (v53)
+# Local k-NN Model (v53)
 
 The simplest rigorous non-parametric learner validated in the exploration
 notebook: knowledge is stored as **local prototypes**, and prediction is just
