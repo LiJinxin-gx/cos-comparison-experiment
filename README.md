@@ -4,9 +4,9 @@
 > **Recommended surface: [`platform/`](docs_platform/PLATFORM_GUIDE.md)** — a mature open-integration platform (NumPy allowed, formal backend auto-selected, I/O decoupled from processing).
 > Legacy folders (`core/`, `algorithms/`, `examples/`) stay zero-dependency idea sketches.
 
-## Latest platform (v0.5.3)
+## Latest platform (v1.0.0)
 
-The **`platform/` package** deeply integrates the latest core identity:
+The **`platform/` package** integrates the v1.0.0 core identity:
 extraction and generation are the forward / reverse of **one local comparison
 relation**, and **closure** is the universal criterion.
 
@@ -18,8 +18,23 @@ relation**, and **closure** is the universal criterion.
 - verified: I/O symmetry True, continuous closure mean|dE|~0 / max~2e-6,
   discrete grounded connectors 100%.
 
-Start with [docs_platform/PLATFORM_GUIDE.md](docs_platform/PLATFORM_GUIDE.md)
-and [examples_platform/demo_platform.py](examples_platform/demo_platform.py).
+Root-level exploration scripts (v1.0.0):
+
+| File | Purpose |
+|------|---------|
+| `companion_demo.py` | Demonstrates the installed v1.0.0 engine (cos/mod/cosmod, passive, active, pooling, backend parity) |
+| `minimal_principle.py` | Minimum readable self-contained principle walkthrough |
+| `atomic_contrast.py` | Atomic contrast matching |
+| `group_hierarchical.py` | Group / hierarchical isolation experiments |
+| `heatmap_analysis.py` | Large-scale heatmap analysis |
+| `local_knn.py` | Local k-NN on-demand learner |
+| `memory.py` | Open memory system exploration |
+| `demo_image.py` / `demo_text.py` / `demo_speech.py` / `demo_reasoning.py` / `demo_generation.py` | Domain demos |
+| `test_mnist.py` / `test_multi_domain.py` | Multi-domain recognition tests |
+| `train_llm.py` / `train_real.py` | Training paradigms |
+
+Start with [companion_demo.py](companion_demo.py) for the installed-engine
+walkthrough, and [platform/](platform/) for the mature integration surface.
 
 ## What is this?
 
@@ -61,16 +76,24 @@ regardless of which specific algorithm is being tested:
 
 ```
 explore/
-├── platform/          # Recommended: open-integration platform (backends, io_pairs, relation_core, heatmap, depscan)
-├── candidates/        # Immature but promising results, tracked publicly (each with DEPENDENCIES)
-├── examples_platform/ # Mature standalone demo (out_platform/ heatmaps)
-├── docs_platform/     # Platform guide
-├── core/              # [legacy] Foundational primitives (zero dependency)
-├── algorithms/        # [legacy] One file = one idea (zero dependency)
-├── examples/          # [legacy] Runnable demos of legacy algorithms
-├── templates/         # [legacy] Call templates for the production library
-├── module_batch/      # [legacy] Batch instruction files
-└── docs/              # [legacy] Design notes and exploration logs
+├── companion_demo.py    # v1.0.0: installed-engine walkthrough
+├── minimal_principle.py # v1.0.0: minimum principle
+├── atomic_contrast.py  # v1.0.0: atomic contrast matching
+├── group_hierarchical.py
+├── heatmap_analysis.py
+├── local_knn.py
+├── memory.py
+├── demo_image.py / demo_text.py / demo_speech.py / demo_reasoning.py / demo_generation.py
+├── test_mnist.py / test_multi_domain.py
+├── train_llm.py / train_real.py
+├── platform/            # Recommended: open-integration platform (backends, io_pairs, relation_core, heatmap, depscan)
+├── candidates/          # Immature but promising results, tracked publicly
+├── core/                # [legacy] Foundational primitives (zero dependency)
+├── algorithms/          # [legacy] One file = one idea (zero dependency)
+├── examples/            # [legacy] Runnable demos of legacy algorithms
+├── templates/           # [legacy] Call templates for the production library
+├── module_batch/        # [legacy] Batch instruction files
+└── docs/                # [legacy] Design notes and exploration logs
 ```
 
 The `platform/` package is the recommended surface for mature work; `candidates/`
